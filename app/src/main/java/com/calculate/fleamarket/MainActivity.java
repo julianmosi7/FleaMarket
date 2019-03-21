@@ -1,10 +1,13 @@
 package com.calculate.fleamarket;
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -108,6 +111,34 @@ public class MainActivity extends AppCompatActivity {
     public void showWebserviceTask(){
         WebserviceTask task = new WebserviceTask();        
         task.execute(username);
+    }
+
+    public void dialog_add(){
+        final View vDialog = getLayoutInflater().inflate(R.layout.dialog, null);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setMessage("Add new Article");
+        final EditText txtdescription = vDialog.findViewById(R.id.description);
+        final EditText txtprice = vDialog.findViewById(R.id.price);
+        final EditText txtusername = vDialog.findViewById(R.id.username);
+        final EditText txtemail = vDialog.findViewById(R.id.email);
+        final EditText txttelephone = vDialog.findViewById(R.id.telephone);
+        alert.setView(vDialog);
+
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //add
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        alert.show();
     }
 
 
