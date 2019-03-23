@@ -5,5 +5,4 @@
         android:id="@+id/menu_add"
         android:title="@string/add"
         app:showAsAction="always" />
-    </item>
 </menu>
