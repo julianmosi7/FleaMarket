@@ -1,14 +1,18 @@
 package com.calculate.fleamarket;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,15 +40,36 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
 
 
+
         bindAdapterToListView(listView);
         showWebserviceTask();
 
     }
 
+     @Override
+     public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menue, menu);
+        return super.onCreateOptionsMenu(menu);
+     }
+
+     @Override
+     public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        switch(id){
+            case R.id.menu_add:
+                dialog_add();
+            case R.id.menu_preferences:
+                Intent intent = new Intent(this, MySettingsActivity.class);
+                startActivityForResult(intent, 0);
+        }
+        return super.onOptionsItemSelected(item);
+     }
+
     public class WebserviceTask extends AsyncTask<String, Integer, String> {
 
         @Override
         protected String doInBackground(String... strings) {
+            String operation = "";
             String username = strings[0];
             int password = 17333;
             String url = "http://eaustria.no-ip.biz/flohmarkt/flohmarkt.php?operation=get";
@@ -93,6 +118,10 @@ public class MainActivity extends AppCompatActivity {
                     String phone = jsonObject.getString("phone");
                     Article article = new Article(id, name, price, username, email, phone);
                     articles.add(article);
+                    for (Article art :
+                            articles) {
+                        System.out.println(art.toString());
+                    }
                 }
             } catch (JSONException ex) {
                 ex.printStackTrace();
