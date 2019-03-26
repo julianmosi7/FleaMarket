@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                dialog_show(position);
             }
         });
 
@@ -127,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private void outputRepoNames(String s) {
+            System.out.println(op);
            if(op.equals("add")){
                try {
                    JSONObject jsonObject = new JSONObject(s);
@@ -218,14 +220,25 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
-    public void dialog_show(){
+    public void dialog_show(int position){
         final View vDialog = getLayoutInflater().inflate(R.layout.view, null);
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        Article article = articles.get(position);
 
-
-
-
+        final TextView description = vDialog.findViewById(R.id.bezeichnung);
+        final TextView price = vDialog.findViewById(R.id.preis);
+        final TextView username = vDialog.findViewById(R.id.benutzername);
+        final TextView email = vDialog.findViewById(R.id.email);
+        final TextView telephone = vDialog.findViewById(R.id.telefon);
         alert.setView(vDialog);
+
+
+        description.setText(article.getDescription());
+        price.setText(String.valueOf(article.getPrice()));
+        username.setText(article.getUsername());
+        email.setText(article.getEmail());
+        telephone.setText(article.getTelephone());
+
 
        alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
            @Override
