@@ -1,8 +1,11 @@
 package com.calculate.fleamarket;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class DetailActivity extends AppCompatActivity {
@@ -15,6 +18,15 @@ public class DetailActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         article = (Article) bundle.getSerializable("article");
         show();
+
+        Button b = findViewById(R.id.call);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPhoneCall();
+            }
+        });
+
     }
 
     public void show(){
@@ -29,5 +41,13 @@ public class DetailActivity extends AppCompatActivity {
         username.setText(article.getUsername());
         email.setText(article.getEmail());
         telephone.setText(article.getTelephone());
+
+    }
+
+    public void openPhoneCall(){
+        String phone = "tel:(+43) 069911343415";
+        Uri uri = Uri.parse(phone);
+        Intent intent = new Intent(Intent.ACTION_DIAL, uri);
+        startActivity(intent);
     }
 }
