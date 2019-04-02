@@ -1,20 +1,29 @@
 package com.calculate.fleamarket;
 
-public class Article {
+import android.content.Intent;
+import android.view.View;
+
+import java.io.Serializable;
+
+public class Article implements Serializable {
     int ID;
     String description;
     double price;
     String username;
     String email;
     String telephone;
+    double latitude;
+    double longitude;
 
-    public Article(int ID, String description, double price, String username, String email, String telephone) {
+    public Article(int ID, String description, double price, String username, String email, String telephone, double latitude, double longitude) {
         this.ID = ID;
         this.description = description;
         this.price = price;
         this.username = username;
         this.email = email;
         this.telephone = telephone;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getDescription() {
@@ -60,4 +69,5 @@ public class Article {
     public String toString(){
         return description + "   |   " + price;
     }
+
 }

@@ -46,5 +46,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Telefon" />
+
+        <EditText
+            android:id="@+id/latitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Latitude" />
+
+        <EditText
+            android:id="@+id/longitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Longitude" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

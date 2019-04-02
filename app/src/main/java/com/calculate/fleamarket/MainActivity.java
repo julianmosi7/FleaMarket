@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                dialog_show(position);
+                //dialog_show(position);
+                startActivity(position);
             }
         });
 
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             String operation = article[0];
             art = operation;
             if(operation.equals("add")){
-                art = art + "&name=" + article[1] + "&price=" + article[2] + "&username=" + article[3] + "&password=" + article[4] + "&email=" + article[5] + "&phone=" + article[6];
+                art = art + "&name=" + article[1] + "&price=" + article[2] + "&username=" + article[3] + "&password=" + article[4] + "&email=" + article[5] + "&phone=" + article[6] + "&latitude" + article[7] + "&longitude" + article[8];
             }
             System.out.println("------------");
             System.out.println(art);
@@ -151,7 +152,9 @@ public class MainActivity extends AppCompatActivity {
                        String username = jsonObject.getString("username");
                        String email = jsonObject.getString("email");
                        String phone = jsonObject.getString("phone");
-                       Article article = new Article(id, name, price, username, email, phone);
+                       double latitude = Double.parseDouble(jsonObject.getString("lat"));
+                       double longitude = Double.parseDouble(jsonObject.getString("lon"));
+                       Article article = new Article(id, name, price, username, email, phone, latitude, longitude);
                        articles.add(article);
                    }
                } catch (JSONException ex) {
@@ -188,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
         final EditText txtusername = vDialog.findViewById(R.id.username);
         final EditText txtemail = vDialog.findViewById(R.id.email);
         final EditText txttelephone = vDialog.findViewById(R.id.telephone);
+        final EditText txtlatitude = vDialog.findViewById(R.id.latitude);
+        final EditText txtlongitude = vDialog.findViewById(R.id.longitude);
         final String[] art = new String[10];
 
 
@@ -203,6 +208,8 @@ public class MainActivity extends AppCompatActivity {
                 art[4] = prefs.getString("password", "17333");
                 art[5] = txtemail.getText().toString();
                 art[6] = txttelephone.getText().toString();
+                art[7] = txtlatitude.getText().toString();
+                art[8] = txtlongitude.getText().toString();
                 WebserviceTask task = new WebserviceTask(art);
                 task.execute();
             }
@@ -247,10 +254,15 @@ public class MainActivity extends AppCompatActivity {
            }
        });
 
-
-
         alert.show();
     }
+
+    public void startActivity(int position){
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("article", articles.get(position));
+        startActivity(intent);
+    }
+
 
 
 }
