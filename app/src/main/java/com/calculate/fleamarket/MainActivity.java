@@ -1,13 +1,21 @@
 package com.calculate.fleamarket;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.channels.Channel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<Article> adapter;
     private List<Article> articles = new ArrayList();
     private SharedPreferences prefs;
+    private static String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +85,41 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_preferences:
                 Intent intent = new Intent(this, MySettingsActivity.class);
                 startActivityForResult(intent, 0);
+            case R.id.menu_agent:
+                intent = new Intent(this, AgentActivity.class);
+                startActivityForResult(intent, 0);
+
         }
         return super.onOptionsItemSelected(item);
      }
+
+     private void sendMessage(int counter){
+        Intent intent = new Intent(getPackageName() + ".counter");
+        intent.putExtra("counter", counter);
+        sendBroadcast(intent);
+     }
+
+
+
+
+
+    public void startService(View view){
+        if(prefs.getString("ifclosed", "true").equals(true)){
+            Log.d(TAG, "startService: entered");
+            Intent intent = new Intent(this, MyService.class);
+            String msg = "Service started from Main Activity";
+            intent.putExtra("msg", msg);
+            startService(intent);
+        }
+    }
+
+
+
+
+
+
+
+
 
     public class WebserviceTask extends AsyncTask<String, Integer, String> {
         String art = "";
@@ -262,6 +304,37 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("article", articles.get(position));
         startActivity(intent);
     }
+
+    public void Message(){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "1")
+                .setSmallIcon(android.R.drawable.star_big_on)
+                .setColor(Color.YELLOW)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText("This is just a small Notification")
+                .setWhen(System.currentTimeMillis())
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("channelID", "channel", importance);
+            channel.setDescription("description");
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+            builder.setContentIntent(pendingIntent)
+                    .setAutoCancel(true);
+
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+            int notificationId= 1;
+            notificationManagerCompat.notify(notificationId, builder.build());
+        }
+    }
+
+
+
 
 
 

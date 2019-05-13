@@ -12,4 +12,10 @@
         app:showAsAction="always"
         android:icon="@android:drawable/ic_menu_preferences"/>
 
+    <item
+        android:id="@+id/menu_agent"
+        android:title="Suchagenten erstellen"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_person_add_black_24dp" />
+
 </menu>
