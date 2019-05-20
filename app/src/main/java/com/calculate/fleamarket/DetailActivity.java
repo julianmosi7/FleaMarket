@@ -1,8 +1,12 @@
 package com.calculate.fleamarket;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,10 +17,18 @@ import android.widget.Toast;
 public class DetailActivity extends AppCompatActivity {
     Article article;
     String mail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        int orientation = getResources().getConfiguration().orientation;
+        if(orientation != Configuration.ORIENTATION_PORTRAIT){
+            finish();
+        }
+
+
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         article = (Article) bundle.getSerializable("article");
@@ -62,6 +74,7 @@ public class DetailActivity extends AppCompatActivity {
         Uri uri = Uri.parse(phone);
         Intent intent = new Intent(Intent.ACTION_DIAL, uri);
         startActivity(intent);
+
     }
 
     public void openEmail() {
@@ -79,7 +92,6 @@ public class DetailActivity extends AppCompatActivity {
        }catch(ActivityNotFoundException ex){
            Toast.makeText(this, "No email client installed.", Toast.LENGTH_SHORT).show();
        }
-
 
 
 

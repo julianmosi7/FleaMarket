@@ -39,13 +39,14 @@ import java.nio.channels.Channel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LeftFragment.onClicklistener{
     String username = "MoshamJul";
     private ListView listView;
     private ArrayAdapter<Article> adapter;
     private List<Article> articles = new ArrayList();
     private SharedPreferences prefs;
     private static String TAG = MainActivity.class.getSimpleName();
+    RightFragment rf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
         bindAdapterToListView(listView);
         showWebserviceTask();
+
+        rf= (RightFragment) getSupportFragmentManager().findFragmentById(R.id.fragRight);
 
     }
 
@@ -113,12 +116,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
-
-
+    @Override
+    public void onClick(Article a) {
+        if(rf!=null){
+            rf.show(a);
+        }
+    }
 
 
     public class WebserviceTask extends AsyncTask<String, Integer, String> {
